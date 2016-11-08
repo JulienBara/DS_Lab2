@@ -1,1 +1,1 @@
-python server.py $1 $2
+python server.py $1 $2 $3
