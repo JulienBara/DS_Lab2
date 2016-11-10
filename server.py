@@ -27,6 +27,9 @@ print ('Socket bind complete')
 s.listen(nbrCoAllowed)
 print ('Socket now listening')
 
+global serverOn
+serverOn = True
+
 
 # Function for handling connections. This will be used to create threads
 def clientThread(conn):
@@ -34,7 +37,9 @@ def clientThread(conn):
     # conn.send('Welcome to the server. Type something and hit enter\n')  # send only takes string
 
     # infinite loop so that function do not terminate and thread do not end.
-    while True:
+    global serverOn
+
+    while serverOn:
 
         # #Receiving from client
         # data = conn.recv(1024)
@@ -50,7 +55,7 @@ def clientThread(conn):
             break
 
         if data == "KILL_SERVICE\n":
-            conn.send("Not implemented yet")
+            serverOn = False
 
         if data[:4] == "HELO":
             text = data[5:]
@@ -61,7 +66,7 @@ def clientThread(conn):
 
 
 # now keep talking with the client
-while 1:
+while serverOn:
     # wait to accept a connection - blocking call
     conn, addr = s.accept()
     print ('Connected with ' + addr[0] + ':' + str(addr[1]))
