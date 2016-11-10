@@ -38,22 +38,8 @@ nbrCoClient = 0
 def clientThread(conn):
     nbrCoClient += 1
 
-    # Sending message to connected client
-    # conn.send('Welcome to the server. Type something and hit enter\n')  # send only takes string
-
-    # infinite loop so that function do not terminate and thread do not end.
     global serverOn
-
     while serverOn:
-
-        # #Receiving from client
-        # data = conn.recv(1024)
-        # reply = 'OK...' + data
-        # if not data: 
-        #     break
-
-        # conn.sendall(reply)
-
         data = conn.recv(4096)
 
         if not data:
@@ -66,16 +52,17 @@ def clientThread(conn):
             text = data[5:]
             conn.send("HELO " + text + "IP:" + host + "\nPort:" + str(port) + "\nStudentID:" + "16337089" + "\n")
 
-    # came out of loop
     nbrCoClient -= 1
     conn.close()
 
 
-# now keep talking with the client
 while serverOn:
     # wait to accept a connection - blocking call
     conn, addr = s.accept()
     print ('Connected with ' + addr[0] + ':' + str(addr[1]))
+
+    if not serverOn:
+        break
 
     if nbrCoAllowed < nbrCoClient:
         print ("To many connected clients")
