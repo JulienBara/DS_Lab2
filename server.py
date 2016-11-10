@@ -8,7 +8,7 @@ if len(sys.argv) > 3:
     nbrCoAllowed = int(sys.argv[3])
 else:
     host = "localhost"
-    port = 8015
+    port = 9000
     nbrCoAllowed = 10
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
