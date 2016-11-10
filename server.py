@@ -64,16 +64,19 @@ def clientThread(conn):
 while serverOn:
     if nbrCoAllowed > nbrCoClient:
         # wait to accept a connection - blocking call
-        conn, addr = s.accept()
-        nbrCoClient += 1
+        s.settimeout(10.0)
+        try:
+            conn, addr = s.accept()
+            nbrCoClient += 1
 
-        print ('Connected with ' + addr[0] + ':' + str(addr[1]))
+            print ('Connected with ' + addr[0] + ':' + str(addr[1]))
 
-        if not serverOn:
-            break
+            if not serverOn:
+                break
 
-        # start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
-        start_new_thread(clientThread, (conn,))
-
+            # start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
+            start_new_thread(clientThread, (conn,))
+        except:
+            continue
 s.close()
 exit()
