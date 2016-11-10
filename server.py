@@ -52,8 +52,9 @@ def clientThread(conn):
         if data == "KILL_SERVICE\n":
             conn.send("Not implemented yet")
 
-        if data == "HELO text\n":
-            conn.send("HELO text\nIP:[ip address]\nPort:[port number]\nStudentID:[your student ID]\n")
+        if data[:4] == "HELO":
+            text = data[5:]
+            conn.send("HELO " + text + "\nIP:" + host + "\nPort:" + port + "\nStudentID:" + "16337089" + "\n")
 
     # came out of loop
     conn.close()
