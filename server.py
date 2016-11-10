@@ -33,15 +33,18 @@ serverOn = True
 global nbrCoClient
 nbrCoClient = 0
 
-
 # Function for handling connections. This will be used to create threads
 def clientThread(conn):
-    global nbrCoClient
-    nbrCoClient += 1
+    conn.settimeout(60.0)
 
+    global nbrCoClient
     global serverOn
     while serverOn:
-        data = conn.recv(4096)
+
+        try:
+            data = conn.recv(4096)
+        except:
+            break
 
         if not data:
             break
@@ -55,21 +58,21 @@ def clientThread(conn):
 
     nbrCoClient -= 1
     conn.close()
+    exit()
 
 
 while serverOn:
-    # wait to accept a connection - blocking call
-    conn, addr = s.accept()
-    print ('Connected with ' + addr[0] + ':' + str(addr[1]))
+    if nbrCoAllowed > nbrCoClient:
+        # wait to accept a connection - blocking call
+        conn, addr = s.accept()
+        nbrCoClient += 1
 
-    if not serverOn:
-        break
+        print ('Connected with ' + addr[0] + ':' + str(addr[1]))
 
-    if nbrCoAllowed < nbrCoClient:
-        print ("To many connected clients")
-        conn.close()
+        if not serverOn:
+            break
 
-    # start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
-    start_new_thread(clientThread, (conn,))
+        # start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
+        start_new_thread(clientThread, (conn,))
 
 s.close()
