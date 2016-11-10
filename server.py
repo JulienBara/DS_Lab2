@@ -51,6 +51,7 @@ def clientThread(conn):
 
         if data == "KILL_SERVICE\n":
             serverOn = False
+            print("Shutting down server")
 
         if data[:4] == "HELO":
             text = data[5:]
