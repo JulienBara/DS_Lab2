@@ -9,7 +9,7 @@ else:
     port = 3000
 
 socketClient = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-socketClient.settimeout(5.0)
+socketClient.settimeout(60.0)
 
 try :
     socketClient.connect((host, port))
