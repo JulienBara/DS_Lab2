@@ -36,6 +36,7 @@ nbrCoClient = 0
 
 # Function for handling connections. This will be used to create threads
 def clientThread(conn):
+    global nbrCoClient
     nbrCoClient += 1
 
     global serverOn
