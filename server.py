@@ -24,7 +24,7 @@ except socket.error as msg:
 print ('Socket bind complete')
 
 # Start listening on socket
-s.listen(1)
+s.listen(10)
 print ('Socket now listening')
 
 global serverOn
