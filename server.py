@@ -54,7 +54,7 @@ def clientThread(conn):
 
         if data[:4] == "HELO":
             text = data[5:]
-            conn.send("HELO " + text + "\nIP:" + host + "\nPort:" + str(port) + "\nStudentID:" + "16337089" + "\n")
+            conn.send("HELO " + text + "IP:" + host + "\nPort:" + str(port) + "\nStudentID:" + "16337089" + "\n")
 
     # came out of loop
     conn.close()
