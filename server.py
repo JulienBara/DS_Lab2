@@ -76,3 +76,4 @@ while serverOn:
         start_new_thread(clientThread, (conn,))
 
 s.close()
+exit()
