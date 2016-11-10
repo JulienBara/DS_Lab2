@@ -24,15 +24,20 @@ except socket.error as msg:
 print ('Socket bind complete')
 
 # Start listening on socket
-s.listen(nbrCoAllowed)
+s.listen(1)
 print ('Socket now listening')
 
 global serverOn
 serverOn = True
 
+global nbrCoClient
+nbrCoClient = 0
+
 
 # Function for handling connections. This will be used to create threads
 def clientThread(conn):
+    nbrCoClient += 1
+
     # Sending message to connected client
     # conn.send('Welcome to the server. Type something and hit enter\n')  # send only takes string
 
@@ -62,6 +67,7 @@ def clientThread(conn):
             conn.send("HELO " + text + "IP:" + host + "\nPort:" + str(port) + "\nStudentID:" + "16337089" + "\n")
 
     # came out of loop
+    nbrCoClient -= 1
     conn.close()
 
 
@@ -70,6 +76,10 @@ while serverOn:
     # wait to accept a connection - blocking call
     conn, addr = s.accept()
     print ('Connected with ' + addr[0] + ':' + str(addr[1]))
+
+    if nbrCoAllowed < nbrCoClient:
+        print ("To many connected clients")
+        conn.close()
 
     # start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
     start_new_thread(clientThread, (conn,))
